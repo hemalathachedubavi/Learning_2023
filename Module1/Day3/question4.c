@@ -2,38 +2,41 @@
 For example let's say we have n = 3, and n1 = 8, n2 = 156, n3 = 123450, the result will be "Not Valid", 1 and 6, 0 and 5*/
 
 #include <stdio.h>
-
-void findSmallestLargestDigits(int n, int numbers[]) {
-    int smallest = 9;
-    int largest = 0;
-
-    for (int i = 0; i < n; i++) {
+void findSmallestLargestDigits(int numbers[], int size) {
+    int i, j;
+    int smallestDigit, largestDigit;
+    int isSingleDigit;
+    for (i = 0; i < size; i++) {
+        // Check if the number is a single digit
+        isSingleDigit = 1;
         int num = numbers[i];
-
-        while (num > 0) {
-            int digit = num % 10;
-            if (digit < smallest)
-                smallest = digit;
-            if (digit > largest)
-                largest = digit;
+        while (num > 9) {
             num /= 10;
+            isSingleDigit = 0;
+        }
+        if (isSingleDigit) {
+            printf("%d - Not Valid\n", numbers[i]);
+        } else {
+            smallestDigit = 9;
+            largestDigit = 0;
+            while (numbers[i] != 0) {
+                int digit = numbers[i] % 10;
+                if (digit < smallestDigit) {
+                    smallestDigit = digit;
+                }
+                if (digit > largestDigit) {
+                    largestDigit = digit;
+                }
+                numbers[i] /= 10;
+            }
+            printf("Smallest Digit of %d: %d\n", numbers[i], smallestDigit);
+            printf("Largest Digit of %d: %d\n", numbers[i], largestDigit);
         }
     }
-
-    if (smallest == 9 && largest == 0)
-        printf("Not Valid\n");
-    else
-        printf("Smallest digit: %d\nLargest digit: %d\n", smallest, largest);
 }
-
 int main() {
-    int n = 3;
     int numbers[] = {8, 156, 123450};
-
-    findSmallestLargestDigits(n, numbers);
-
+    int size = sizeof(numbers) / sizeof(numbers[0]);
+    findSmallestLargestDigits(numbers, size);
     return 0;
 }
-
-
-
